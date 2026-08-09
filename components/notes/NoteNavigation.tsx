@@ -6,15 +6,6 @@ interface NoteNavigationProps {
   next: string | null;
 }
 
-function formatTopic(topic: string) {
-  return topic
-    .split("-")
-    .map(
-      (word) => word.charAt(0).toUpperCase() + word.slice(1)
-    )
-    .join(" ");
-}
-
 export default function NoteNavigation({
   technology,
   previous,
@@ -25,15 +16,9 @@ export default function NoteNavigation({
       {previous ? (
         <Link
           href={`/learn/${technology}/${previous}`}
-          className="group rounded-lg border border-border px-5 py-3 transition hover:bg-muted"
+          className="rounded-lg border border-border px-5 py-2.5 text-sm font-medium transition hover:bg-muted"
         >
-          <span className="block text-xs text-muted-foreground">
-            Previous
-          </span>
-
-          <span className="mt-1 block font-medium group-hover:text-emerald-500">
-            ← {formatTopic(previous)}
-          </span>
+          ← Previous
         </Link>
       ) : (
         <div />
@@ -42,15 +27,9 @@ export default function NoteNavigation({
       {next ? (
         <Link
           href={`/learn/${technology}/${next}`}
-          className="group rounded-lg border border-border px-5 py-3 text-right transition hover:bg-muted"
+          className="rounded-lg bg-emerald-500 px-5 py-2.5 text-sm font-medium text-black transition hover:bg-emerald-400"
         >
-          <span className="block text-xs text-muted-foreground">
-            Next
-          </span>
-
-          <span className="mt-1 block font-medium group-hover:text-emerald-500">
-            {formatTopic(next)} →
-          </span>
+          Next →
         </Link>
       ) : (
         <div />

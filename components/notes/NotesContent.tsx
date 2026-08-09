@@ -1,14 +1,15 @@
 import { MDXRemote } from "next-mdx-remote/rsc";
-import remarkGfm from "remark-gfm";
-
 import CodeBlock from "./CodeBlock";
 import TableOfContents from "./TableOfContents";
 import Callout from "./Callout";
+import BookmarkButton from "./BookmarkButton";
+import CompleteTopicButton from "./CompleteTopicButton";
 import { highlightCode } from "@/lib/highlight";
 
 interface NotesContentProps {
   content: string;
   technology: string;
+  topic: string;
 }
 
 function getLanguage(className?: string) {
@@ -37,25 +38,23 @@ function extractHeadings(content: string) {
 
       if (!match) return null;
 
-      const level = match[1].length;
-      const title = match[2].trim();
-
       return {
-        id: createId(title),
-        title,
-        level,
+        id: createId(match[2].trim()),
+        title: match[2].trim(),
+        level: match[1].length,
       };
     })
     .filter(Boolean) as {
-    id: string;
-    title: string;
-    level: number;
-  }[];
+      id: string;
+      title: string;
+      level: number;
+    }[];
 }
 
 export default async function NotesContent({
   content,
   technology,
+  topic,
 }: NotesContentProps) {
   const tocItems = extractHeadings(content);
 
@@ -134,11 +133,7 @@ export default async function NotesContent({
       children,
     }: {
       children: React.ReactNode;
-    }) => (
-      <tbody>
-        {children}
-      </tbody>
-    ),
+    }) => <tbody>{children}</tbody>,
 
     tr: ({
       children,
@@ -242,8 +237,7 @@ export default async function NotesContent({
       children: React.ReactNode;
       className?: string;
     }) => {
-      const isBlock =
-        className?.includes("language-");
+      const isBlock = className?.includes("language-");
 
       if (!isBlock) {
         return (
@@ -298,25 +292,50 @@ export default async function NotesContent({
   };
 
   return (
-    <article className="relative">
-      <div className="mx-auto max-w-3xl px-6 py-10 lg:px-10">
-        <div className="mb-10">
-          <p className="mb-2 text-sm font-medium uppercase tracking-wider text-emerald-500">
-            {technology}
-          </p>
+    <article className="min-w-0 flex-1">
+      <div className="mx-auto max-w-4xl px-6 py-12 lg:px-10">
+
+        {/* Topic Header */}
+        <div className="mb-10 flex items-center justify-between gap-4 border-b border-border pb-6">
+          <div>
+            <p className="text-sm font-medium uppercase tracking-wider text-emerald-500">
+              {technology}
+            </p>
+
+            <h1 className="mt-2 text-3xl font-bold tracking-tight">
+              {topic
+                .split("-")
+                .map(
+                  (word) =>
+                    word.charAt(0).toUpperCase() +
+                    word.slice(1)
+                )
+                .join(" ")}
+            </h1>
+          </div>
+          <div className="flex items-center gap-2">
+            <CompleteTopicButton
+              technology={technology}
+              topic={topic}
+            />
+          </div>
+
+          <BookmarkButton
+            technology={technology}
+            topic={topic}
+          />
         </div>
 
-        <MDXRemote
-          source={content}
-          components={components}
-          options={{
-            mdxOptions: {
-              remarkPlugins: [remarkGfm],
-            },
-          }}
-        />
+        {/* MDX Content */}
+        <div className="prose-none">
+          <MDXRemote
+            source={content}
+            components={components}
+          />
+        </div>
       </div>
 
+      {/* Table of Contents */}
       <TableOfContents items={tocItems} />
     </article>
   );

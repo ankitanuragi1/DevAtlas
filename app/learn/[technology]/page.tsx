@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { ArrowRight, BookOpen, Clock, Layers3 } from "lucide-react";
-
+import LearningProgress from "@/components/learn/LearningProgress";
 import LearningSidebar from "@/components/learn/LearningSidebar";
 import { technologyTopics } from "@/data/topics";
 
@@ -99,6 +99,12 @@ export default async function TechnologyPage({
 
         {/* Main */}
         <main className="min-w-0 flex-1">
+          <LearningProgress technology={technology} />
+
+          {/* <NotesContent
+            content={content}
+            technology={technology}
+          /> */}
           <div className="mx-auto max-w-4xl px-6 py-12 lg:px-10">
             {/* Hero */}
             <section>

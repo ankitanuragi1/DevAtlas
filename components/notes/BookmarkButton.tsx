@@ -1,7 +1,7 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import { Bookmark } from "lucide-react";
+import { useEffect, useState } from "react";
 
 interface BookmarkButtonProps {
   technology: string;
@@ -12,34 +12,41 @@ export default function BookmarkButton({
   technology,
   topic,
 }: BookmarkButtonProps) {
-  const key = `devatlas-bookmark-${technology}-${topic}`;
-
   const [bookmarked, setBookmarked] = useState(false);
 
+  const storageKey = `devatlas-bookmark-${technology}-${topic}`;
+
   useEffect(() => {
-    setBookmarked(localStorage.getItem(key) === "true");
-  }, [key]);
+    const saved = localStorage.getItem(storageKey);
+    setBookmarked(saved === "true");
+  }, [storageKey]);
 
   function toggleBookmark() {
-    const next = !bookmarked;
+    const newValue = !bookmarked;
 
-    setBookmarked(next);
+    setBookmarked(newValue);
 
-    if (next) {
-      localStorage.setItem(key, "true");
+    if (newValue) {
+      localStorage.setItem(storageKey, "true");
     } else {
-      localStorage.removeItem(key);
+      localStorage.removeItem(storageKey);
     }
   }
 
   return (
     <button
+      type="button"
       onClick={toggleBookmark}
-      className={`mt-4 flex items-center gap-2 rounded-lg border px-4 py-2.5 text-sm font-medium transition ${
+      className={`inline-flex items-center gap-2 rounded-lg border px-4 py-2 text-sm font-medium transition ${
         bookmarked
-          ? "border-emerald-500/40 bg-emerald-500/10 text-emerald-500"
-          : "border-border hover:bg-muted"
+          ? "border-emerald-500/50 bg-emerald-500/10 text-emerald-500"
+          : "border-border text-muted-foreground hover:bg-muted hover:text-foreground"
       }`}
+      aria-label={
+        bookmarked
+          ? "Remove bookmark"
+          : "Bookmark this topic"
+      }
     >
       <Bookmark
         className="h-4 w-4"
