@@ -1,0 +1,961 @@
+# JavaScript Variables
+
+A variable is a named container used to store a value in a JavaScript program.
+
+For example:
+
+```javascript
+const name = "Ankit";
+let age = 20;
+````
+
+Here:
+
+* `name` is the variable name.
+* `"Ankit"` is the value.
+* `const` is the declaration keyword.
+* `age` stores the number `20`.
+
+## Why Do We Need Variables?
+
+Variables allow us to store and reuse information.
+
+Without variables:
+
+```javascript
+console.log("Ankit");
+console.log("Ankit");
+console.log("Ankit");
+```
+
+With a variable:
+
+```javascript
+const name = "Ankit";
+
+console.log(name);
+console.log(name);
+console.log(name);
+```
+
+If the value needs to change:
+
+```javascript
+let score = 10;
+
+score = 20;
+
+console.log(score);
+```
+
+## Declaring Variables
+
+JavaScript provides three keywords for declaring variables:
+
+* `var`
+* `let`
+* `const`
+
+```javascript
+var age = 20;
+let score = 50;
+const name = "Ankit";
+```
+
+Although all three can declare variables, they do not behave exactly the same.
+
+---
+
+# `let`
+
+`let` is used when the value of a variable may need to change.
+
+```javascript
+let age = 20;
+
+age = 21;
+
+console.log(age);
+```
+
+Output:
+
+```text
+21
+```
+
+A variable declared with `let` can be reassigned.
+
+```javascript
+let score = 10;
+
+score = 20;
+score = 30;
+```
+
+But it cannot be declared again in the same block.
+
+```javascript
+let age = 20;
+
+// Error
+let age = 21;
+```
+
+---
+
+# `const`
+
+`const` is used when a variable should not be reassigned.
+
+```javascript
+const name = "Ankit";
+
+console.log(name);
+```
+
+This is not allowed:
+
+```javascript
+const age = 20;
+
+age = 21;
+```
+
+JavaScript will throw an error because a `const` variable cannot be reassigned.
+
+<Callout type="tip" title="Best Practice">
+Prefer `const` by default. Use `let` only when you know that the variable needs to be reassigned.
+</Callout>
+
+---
+
+# `var`
+
+`var` is the older way of declaring variables.
+
+```javascript
+var age = 20;
+
+age = 21;
+```
+
+It is still supported by JavaScript, but modern JavaScript code generally prefers `let` and `const`.
+
+One important difference is that `var` is function-scoped, while `let` and `const` are block-scoped.
+
+We will understand this in the Scope section.
+
+---
+
+# `var` vs `let` vs `const`
+
+| Feature                     | `var`           | `let`                           | `const`              |
+| --------------------------- | --------------- | ------------------------------- | -------------------- |
+| Can reassign                | Yes             | Yes                             | No                   |
+| Can redeclare in same scope | Yes             | No                              | No                   |
+| Block scoped                | No              | Yes                             | Yes                  |
+| Function scoped             | Yes             | Yes                             | Yes                  |
+| Modern recommendation       | Avoid generally | Use when reassignment is needed | Preferred by default |
+
+Example:
+
+```javascript
+var a = 10;
+let b = 20;
+const c = 30;
+
+a = 15;
+b = 25;
+
+// c = 35; // Error
+```
+
+---
+
+# Declaration vs Initialization
+
+These two concepts are different.
+
+## Declaration
+
+Creating a variable without assigning a value:
+
+```javascript
+let age;
+```
+
+The variable exists, but its value is currently `undefined`.
+
+```javascript
+console.log(age);
+```
+
+Output:
+
+```text
+undefined
+```
+
+## Initialization
+
+Giving a variable its first value:
+
+```javascript
+let age = 20;
+```
+
+Here the variable is declared and initialized at the same time.
+
+---
+
+# Reassignment
+
+Reassignment means changing the value stored in a variable.
+
+```javascript
+let score = 10;
+
+score = 50;
+
+console.log(score);
+```
+
+Output:
+
+```text
+50
+```
+
+Reassignment is allowed with `let`:
+
+```javascript
+let message = "Hello";
+
+message = "Hello World";
+```
+
+It is not allowed with `const`:
+
+```javascript
+const message = "Hello";
+
+// Error
+message = "Hello World";
+```
+
+---
+
+# Variable Naming Rules
+
+JavaScript variable names must follow certain rules.
+
+## 1. Names can contain letters
+
+```javascript
+const name = "Ankit";
+```
+
+## 2. Names can contain numbers
+
+```javascript
+const user1 = "Ankit";
+const user2 = "Rahul";
+```
+
+But a variable cannot start with a number.
+
+```javascript
+// Invalid
+const 1user = "Ankit";
+```
+
+## 3. Underscores are allowed
+
+```javascript
+const first_name = "Ankit";
+```
+
+## 4. Dollar signs are allowed
+
+```javascript
+const $price = 100;
+```
+
+## 5. Spaces are not allowed
+
+```javascript
+// Invalid
+const first name = "Ankit";
+```
+
+Use:
+
+```javascript
+const firstName = "Ankit";
+```
+
+## 6. JavaScript is case-sensitive
+
+These are different variables:
+
+```javascript
+const name = "Ankit";
+const Name = "Rahul";
+const NAME = "Aman";
+```
+
+---
+
+# Naming Conventions
+
+JavaScript commonly uses **camelCase** for variable names.
+
+```javascript
+const firstName = "Ankit";
+const lastName = "Anuragi";
+const totalMarks = 450;
+const isLoggedIn = true;
+```
+
+Avoid unclear names:
+
+```javascript
+const x = 20;
+const a = "Ankit";
+```
+
+Prefer meaningful names:
+
+```javascript
+const age = 20;
+const studentName = "Ankit";
+```
+
+<Callout type="tip" title="Good Naming">
+A good variable name should communicate what the value represents.
+</Callout>
+
+---
+
+# Reserved Words
+
+Some words are reserved by JavaScript and cannot normally be used as variable names.
+
+Examples:
+
+```text
+class
+function
+return
+if
+else
+for
+while
+const
+let
+var
+new
+this
+switch
+```
+
+This is invalid:
+
+```javascript
+// Invalid
+const class = "CSE";
+```
+
+---
+
+# Block Scope
+
+`let` and `const` are block-scoped.
+
+A block is commonly represented by `{ }`.
+
+```javascript
+{
+  let age = 20;
+  const name = "Ankit";
+
+  console.log(age);
+  console.log(name);
+}
+```
+
+These variables cannot be accessed outside the block:
+
+```javascript
+{
+  let age = 20;
+}
+
+// Error
+console.log(age);
+```
+
+The same applies to `const`.
+
+```javascript
+{
+  const name = "Ankit";
+}
+
+// Error
+console.log(name);
+```
+
+---
+
+# Function Scope
+
+Variables declared with `var` are function-scoped.
+
+```javascript
+function test() {
+  var age = 20;
+
+  console.log(age);
+}
+
+test();
+```
+
+The variable can be accessed inside the function.
+
+But not outside:
+
+```javascript
+function test() {
+  var age = 20;
+}
+
+// Error
+console.log(age);
+```
+
+---
+
+# Difference Between `var` and Block Scope
+
+This is one of the important differences between `var` and `let`.
+
+With `var`:
+
+```javascript
+if (true) {
+  var age = 20;
+}
+
+console.log(age);
+```
+
+Output:
+
+```text
+20
+```
+
+With `let`:
+
+```javascript
+if (true) {
+  let age = 20;
+}
+
+// Error
+console.log(age);
+```
+
+This happens because `let` respects block scope while `var` does not.
+
+<Callout type="important" title="Interview Point">
+One of the major differences between `var` and `let`/`const` is their scoping behavior.
+</Callout>
+
+---
+
+# Hoisting
+
+JavaScript moves certain declarations to the top of their scope during the creation phase of execution.
+
+This behavior is called **hoisting**.
+
+Consider:
+
+```javascript
+console.log(name);
+
+var name = "Ankit";
+```
+
+The result is:
+
+```text
+undefined
+```
+
+Conceptually, it behaves somewhat like:
+
+```javascript
+var name;
+
+console.log(name);
+
+name = "Ankit";
+```
+
+The declaration is available before the assignment.
+
+---
+
+# `let` and `const` Hoisting
+
+`let` and `const` are also hoisted in JavaScript, but they cannot be accessed before their declaration.
+
+```javascript
+console.log(age);
+
+let age = 20;
+```
+
+This produces a `ReferenceError`.
+
+The period between entering the scope and reaching the declaration is called the **Temporal Dead Zone (TDZ)**.
+
+The same applies to `const`.
+
+```javascript
+console.log(name);
+
+const name = "Ankit";
+```
+
+<Callout type="important" title="Remember">
+`var`, `let`, and `const` are all hoisted, but `let` and `const` remain inaccessible during the Temporal Dead Zone.
+</Callout>
+
+---
+
+# `const` With Objects
+
+There is an important point about `const`.
+
+`const` prevents reassignment of the variable, but it does not make an object completely immutable.
+
+For example:
+
+```javascript
+const user = {
+  name: "Ankit",
+  age: 20
+};
+```
+
+You cannot assign a completely new object:
+
+```javascript
+// Error
+user = {
+  name: "Rahul",
+  age: 21
+};
+```
+
+But you can modify an existing property:
+
+```javascript
+user.age = 21;
+
+console.log(user.age);
+```
+
+Output:
+
+```text
+21
+```
+
+The same concept applies to arrays.
+
+```javascript
+const numbers = [1, 2, 3];
+
+numbers.push(4);
+
+console.log(numbers);
+```
+
+Output:
+
+```text
+[1, 2, 3, 4]
+```
+
+<Callout type="note" title="Important">
+`const` prevents reassignment of the variable binding. It does not automatically make objects or arrays immutable.
+</Callout>
+
+---
+
+# Multiple Variables
+
+You can declare multiple variables.
+
+```javascript
+let firstName = "Ankit";
+let age = 20;
+let city = "Bhopal";
+```
+
+You can also write:
+
+```javascript
+let firstName = "Ankit",
+    age = 20,
+    city = "Bhopal";
+```
+
+However, separate declarations are generally easier to read.
+
+---
+
+# Variables and Expressions
+
+A variable can store the result of an expression.
+
+```javascript
+const price = 100;
+const quantity = 3;
+
+const total = price * quantity;
+
+console.log(total);
+```
+
+Output:
+
+```text
+300
+```
+
+Variables can also store function results:
+
+```javascript
+function add(a, b) {
+  return a + b;
+}
+
+const result = add(10, 20);
+
+console.log(result);
+```
+
+Output:
+
+```text
+30
+```
+
+---
+
+# Practical Example
+
+Consider a shopping cart:
+
+```javascript
+const productName = "Laptop";
+const price = 50000;
+let quantity = 1;
+
+quantity = 2;
+
+const totalPrice = price * quantity;
+
+console.log(productName);
+console.log(totalPrice);
+```
+
+Here:
+
+* `productName` does not need reassignment, so we use `const`.
+* `price` does not need reassignment, so we use `const`.
+* `quantity` changes, so we use `let`.
+* `totalPrice` is calculated once, so we use `const`.
+
+This is a good example of choosing the appropriate declaration keyword.
+
+---
+
+# Common Mistakes
+
+## Mistake 1: Using `var` everywhere
+
+Avoid writing modern code like:
+
+```javascript
+var name = "Ankit";
+var age = 20;
+```
+
+Prefer:
+
+```javascript
+const name = "Ankit";
+const age = 20;
+```
+
+---
+
+## Mistake 2: Using `let` when reassignment is not required
+
+Instead of:
+
+```javascript
+let name = "Ankit";
+```
+
+Prefer:
+
+```javascript
+const name = "Ankit";
+```
+
+when the value will not be reassigned.
+
+---
+
+## Mistake 3: Trying to reassign `const`
+
+```javascript
+const age = 20;
+
+// Error
+age = 21;
+```
+
+Use `let` if reassignment is required:
+
+```javascript
+let age = 20;
+
+age = 21;
+```
+
+---
+
+## Mistake 4: Accessing `let` or `const` Before Declaration
+
+```javascript
+console.log(age);
+
+let age = 20;
+```
+
+This causes a `ReferenceError` because of the Temporal Dead Zone.
+
+---
+
+# Best Practices
+
+### 1. Prefer `const`
+
+```javascript
+const username = "Ankit";
+```
+
+### 2. Use `let` when reassignment is necessary
+
+```javascript
+let count = 0;
+
+count++;
+```
+
+### 3. Avoid `var` in modern JavaScript
+
+```javascript
+// Prefer this
+const name = "Ankit";
+```
+
+### 4. Use meaningful names
+
+```javascript
+const totalPrice = 500;
+```
+
+instead of:
+
+```javascript
+const x = 500;
+```
+
+### 5. Use camelCase
+
+```javascript
+const firstName = "Ankit";
+const totalAmount = 500;
+```
+
+---
+
+# Interview Points
+
+## What is a variable?
+
+A variable is a named binding used to reference a value in a JavaScript program.
+
+## Difference between `var`, `let`, and `const`?
+
+The main differences involve reassignment, redeclaration, and scope.
+
+## Is `const` immutable?
+
+No.
+
+`const` prevents reassignment of the variable binding, but objects and arrays referenced by a `const` variable can still be mutated.
+
+## What is the Temporal Dead Zone?
+
+The Temporal Dead Zone is the period between entering a scope and reaching the declaration of a `let` or `const` variable, during which accessing that variable causes a `ReferenceError`.
+
+## Which should you use?
+
+Generally:
+
+```text
+const → default choice
+let   → when reassignment is required
+var   → generally avoid in modern code
+```
+
+---
+
+# Practice
+
+## Beginner
+
+### 1. Create three variables
+
+Create variables for:
+
+```text
+name
+age
+city
+```
+
+Use appropriate declaration keywords.
+
+### 2. Calculate Total
+
+Create:
+
+```javascript
+const price = 100;
+const quantity = 5;
+```
+
+Calculate the total price.
+
+### 3. Reassignment
+
+Create a `let` variable called `score` and change its value three times.
+
+---
+
+## Intermediate
+
+### 4. User Information
+
+Create an object:
+
+```javascript
+const user = {
+  name: "Ankit",
+  age: 20,
+  city: "Bhopal"
+};
+```
+
+Change the user's age.
+
+### 5. Scope
+
+Predict the output:
+
+```javascript
+if (true) {
+  let x = 10;
+  var y = 20;
+}
+
+console.log(y);
+```
+
+Then explain why `x` cannot be accessed outside the block.
+
+### 6. Hoisting
+
+Predict what happens:
+
+```javascript
+console.log(a);
+var a = 10;
+```
+
+Then compare it with:
+
+```javascript
+console.log(b);
+let b = 10;
+```
+
+---
+
+# Quick Revision
+
+```text
+Variable
+    ↓
+Stores/references a value
+
+const
+    ↓
+Default choice
+Cannot be reassigned
+
+let
+    ↓
+Use when reassignment is needed
+
+var
+    ↓
+Older declaration
+Function scoped
+Generally avoided
+
+let / const
+    ↓
+Block scoped
+
+var
+    ↓
+Function scoped
+
+var
+    ↓
+Hoisted and initially accessible as undefined
+
+let / const
+    ↓
+Hoisted but inaccessible during TDZ
+```
+
+<Callout type="tip" title="Key Rule">
+In modern JavaScript, start with `const`. Change it to `let` only when the value needs to be reassigned. Avoid `var` unless you specifically need to understand or work with legacy JavaScript code.
+</Callout>
+
