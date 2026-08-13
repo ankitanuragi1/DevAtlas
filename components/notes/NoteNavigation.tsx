@@ -12,13 +12,24 @@ export default function NoteNavigation({
   next,
 }: NoteNavigationProps) {
   return (
-    <div className="mt-14 flex items-center justify-between border-t border-border pt-6">
+    <div className="mt-16 grid grid-cols-2 gap-4 border-t border-border pt-6">
       {previous ? (
         <Link
           href={`/learn/${technology}/${previous}`}
-          className="rounded-lg border border-border px-5 py-2.5 text-sm font-medium transition hover:bg-muted"
+          className="
+            group rounded-xl border border-border
+            px-5 py-4
+            transition-colors
+            hover:bg-muted/50
+          "
         >
-          ← Previous
+          <span className="block text-xs text-muted-foreground">
+            Previous
+          </span>
+
+          <span className="mt-1 block text-sm font-medium text-foreground">
+            ← Previous topic
+          </span>
         </Link>
       ) : (
         <div />
@@ -27,9 +38,21 @@ export default function NoteNavigation({
       {next ? (
         <Link
           href={`/learn/${technology}/${next}`}
-          className="rounded-lg bg-emerald-500 px-5 py-2.5 text-sm font-medium text-black transition hover:bg-emerald-400"
+          className="
+            group rounded-xl border border-border
+            px-5 py-4 text-right
+            transition-colors
+            hover:border-emerald-500/40
+            hover:bg-emerald-500/5
+          "
         >
-          Next →
+          <span className="block text-xs text-muted-foreground">
+            Next
+          </span>
+
+          <span className="mt-1 block text-sm font-medium text-foreground transition-colors group-hover:text-emerald-500">
+            Next topic →
+          </span>
         </Link>
       ) : (
         <div />

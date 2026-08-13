@@ -45,10 +45,10 @@ function extractHeadings(content: string) {
       };
     })
     .filter(Boolean) as {
-      id: string;
-      title: string;
-      level: number;
-    }[];
+    id: string;
+    title: string;
+    level: number;
+  }[];
 }
 
 export default async function NotesContent({
@@ -66,7 +66,7 @@ export default async function NotesContent({
     }: {
       children: React.ReactNode;
     }) => (
-      <h1 className="text-4xl font-bold tracking-tight">
+      <h1 className="text-4xl font-bold tracking-[-0.035em] text-foreground sm:text-5xl">
         {children}
       </h1>
     ),
@@ -78,7 +78,7 @@ export default async function NotesContent({
     }) => (
       <h2
         id={createId(children)}
-        className="mt-12 scroll-mt-20 border-b border-border pb-2 text-2xl font-bold tracking-tight"
+        className="mt-16 scroll-mt-24 border-b border-border/60 pb-3 text-2xl font-bold tracking-tight text-foreground sm:text-3xl"
       >
         {children}
       </h2>
@@ -91,7 +91,7 @@ export default async function NotesContent({
     }) => (
       <h3
         id={createId(children)}
-        className="mt-8 scroll-mt-20 text-xl font-semibold tracking-tight"
+        className="mt-10 scroll-mt-24 text-xl font-semibold tracking-tight text-foreground"
       >
         {children}
       </h3>
@@ -102,7 +102,7 @@ export default async function NotesContent({
     }: {
       children: React.ReactNode;
     }) => (
-      <p className="mt-4 text-base leading-7 text-muted-foreground">
+      <p className="mt-5 text-[16px] leading-8 text-muted-foreground sm:text-[17px]">
         {children}
       </p>
     ),
@@ -112,7 +112,7 @@ export default async function NotesContent({
     }: {
       children: React.ReactNode;
     }) => (
-      <div className="my-8 overflow-x-auto rounded-lg border border-border">
+      <div className="my-8 overflow-x-auto rounded-xl border border-border/70">
         <table className="w-full border-collapse text-sm">
           {children}
         </table>
@@ -124,7 +124,7 @@ export default async function NotesContent({
     }: {
       children: React.ReactNode;
     }) => (
-      <thead className="bg-muted">
+      <thead className="bg-muted/60">
         {children}
       </thead>
     ),
@@ -140,7 +140,7 @@ export default async function NotesContent({
     }: {
       children: React.ReactNode;
     }) => (
-      <tr className="border-b border-border last:border-0">
+      <tr className="border-b border-border/60 last:border-0">
         {children}
       </tr>
     ),
@@ -150,7 +150,7 @@ export default async function NotesContent({
     }: {
       children: React.ReactNode;
     }) => (
-      <th className="px-4 py-3 text-left font-semibold text-foreground">
+      <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-foreground">
         {children}
       </th>
     ),
@@ -160,7 +160,7 @@ export default async function NotesContent({
     }: {
       children: React.ReactNode;
     }) => (
-      <td className="px-4 py-3 text-muted-foreground">
+      <td className="px-4 py-3 leading-6 text-muted-foreground">
         {children}
       </td>
     ),
@@ -170,7 +170,7 @@ export default async function NotesContent({
     }: {
       children: React.ReactNode;
     }) => (
-      <ul className="mt-4 list-disc space-y-2 pl-6 text-muted-foreground">
+      <ul className="mt-5 list-disc space-y-2 pl-6 text-muted-foreground">
         {children}
       </ul>
     ),
@@ -180,7 +180,7 @@ export default async function NotesContent({
     }: {
       children: React.ReactNode;
     }) => (
-      <ol className="mt-4 list-decimal space-y-2 pl-6 text-muted-foreground">
+      <ol className="mt-5 list-decimal space-y-2 pl-6 text-muted-foreground">
         {children}
       </ol>
     ),
@@ -190,7 +190,7 @@ export default async function NotesContent({
     }: {
       children: React.ReactNode;
     }) => (
-      <li className="pl-1 leading-7">
+      <li className="pl-1 leading-8">
         {children}
       </li>
     ),
@@ -200,7 +200,7 @@ export default async function NotesContent({
     }: {
       children: React.ReactNode;
     }) => (
-      <blockquote className="mt-6 border-l-4 border-emerald-500 pl-5 italic text-muted-foreground">
+      <blockquote className="my-8 rounded-r-xl border-l-4 border-emerald-500 bg-emerald-500/5 px-5 py-4 italic text-muted-foreground">
         {children}
       </blockquote>
     ),
@@ -214,7 +214,7 @@ export default async function NotesContent({
     }) => (
       <a
         href={href}
-        className="font-medium text-emerald-500 underline-offset-4 hover:underline"
+        className="font-medium text-emerald-500 underline-offset-4 transition hover:text-emerald-400 hover:underline"
       >
         {children}
       </a>
@@ -241,7 +241,7 @@ export default async function NotesContent({
 
       if (!isBlock) {
         return (
-          <code className="rounded-md bg-muted px-1.5 py-0.5 font-mono text-sm text-foreground">
+          <code className="rounded-md border border-border/60 bg-muted px-1.5 py-0.5 font-mono text-[0.9em] text-foreground">
             {children}
           </code>
         );
@@ -287,47 +287,58 @@ export default async function NotesContent({
     },
 
     hr: () => (
-      <hr className="my-10 border-border" />
+      <hr className="my-12 border-border/60" />
     ),
   };
 
+  const topicTitle = topic
+    .split("-")
+    .map(
+      (word) =>
+        word.charAt(0).toUpperCase() +
+        word.slice(1)
+    )
+    .join(" ");
+
   return (
-    <article className="min-w-0 flex-1">
-      <div className="mx-auto max-w-4xl px-6 py-12 lg:px-10">
+    <article className="min-w-0">
+      <div className="mx-auto max-w-4xl px-6 py-10 sm:py-12 lg:px-10 lg:py-14">
 
-        {/* Topic Header */}
-        <div className="mb-10 flex items-center justify-between gap-4 border-b border-border pb-6">
-          <div>
-            <p className="text-sm font-medium uppercase tracking-wider text-emerald-500">
-              {technology}
-            </p>
+        {/* Topic header */}
+        <header className="mb-12 border-b border-border/60 pb-8">
+          <div className="flex flex-col gap-6 sm:flex-row sm:items-start sm:justify-between">
+            <div className="min-w-0">
+              <div className="mb-3 flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.16em] text-emerald-500">
+                <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
+                {technology}
+              </div>
 
-            <h1 className="mt-2 text-3xl font-bold tracking-tight">
-              {topic
-                .split("-")
-                .map(
-                  (word) =>
-                    word.charAt(0).toUpperCase() +
-                    word.slice(1)
-                )
-                .join(" ")}
-            </h1>
+              <h1 className="text-3xl font-bold tracking-[-0.03em] text-foreground sm:text-4xl">
+                {topicTitle}
+              </h1>
+
+              <p className="mt-3 text-sm leading-6 text-muted-foreground">
+                Learn the fundamentals, concepts, and practical
+                details you need to understand {topicTitle}.
+              </p>
+            </div>
+
+            <div className="flex shrink-0 items-center gap-2">
+              <BookmarkButton
+                technology={technology}
+                topic={topic}
+              />
+
+              <CompleteTopicButton
+                technology={technology}
+                topic={topic}
+              />
+            </div>
           </div>
-          <div className="flex items-center gap-2">
-            <CompleteTopicButton
-              technology={technology}
-              topic={topic}
-            />
-          </div>
+        </header>
 
-          <BookmarkButton
-            technology={technology}
-            topic={topic}
-          />
-        </div>
-
-        {/* MDX Content */}
-        <div className="prose-none">
+        {/* MDX content */}
+        <div className="min-w-0">
           <MDXRemote
             source={content}
             components={components}
@@ -335,7 +346,7 @@ export default async function NotesContent({
         </div>
       </div>
 
-      {/* Table of Contents */}
+      {/* Right-side TOC */}
       <TableOfContents items={tocItems} />
     </article>
   );

@@ -25,20 +25,22 @@ export default function ReadingProgress() {
 
     updateProgress();
 
-    window.addEventListener("scroll", updateProgress);
+    window.addEventListener("scroll", updateProgress, {
+      passive: true,
+    });
+
+    window.addEventListener("resize", updateProgress);
 
     return () => {
-      window.removeEventListener(
-        "scroll",
-        updateProgress
-      );
+      window.removeEventListener("scroll", updateProgress);
+      window.removeEventListener("resize", updateProgress);
     };
   }, []);
 
   return (
-    <div className="fixed left-0 right-0 top-0 z-[100] h-1 bg-transparent">
+    <div className="fixed left-0 top-0 z-[100] h-0.5 w-full bg-transparent">
       <div
-        className="h-full bg-emerald-500 transition-[width] duration-100"
+        className="h-full origin-left bg-emerald-500 transition-[width] duration-100"
         style={{
           width: `${progress}%`,
         }}

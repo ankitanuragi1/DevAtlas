@@ -1,60 +1,76 @@
+import {
+  AlertCircle,
+  CheckCircle2,
+  Info,
+  Lightbulb,
+  TriangleAlert,
+} from "lucide-react";
+
 interface CalloutProps {
-  type?: "tip" | "note" | "warning" | "important";
+  type?: "info" | "tip" | "warning" | "danger" | "success";
   title?: string;
   children: React.ReactNode;
 }
 
-const config = {
+const styles = {
+  info: {
+    icon: Info,
+    label: "Info",
+    className:
+      "border-blue-500/20 bg-blue-500/5 text-blue-500",
+  },
   tip: {
-    label: "TIP",
-    icon: "💡",
+    icon: Lightbulb,
+    label: "Tip",
     className:
-      "border-emerald-500/30 bg-emerald-500/5",
+      "border-emerald-500/20 bg-emerald-500/5 text-emerald-500",
   },
-
-  note: {
-    label: "NOTE",
-    icon: "📝",
-    className:
-      "border-blue-500/30 bg-blue-500/5",
-  },
-
   warning: {
-    label: "WARNING",
-    icon: "⚠️",
+    icon: TriangleAlert,
+    label: "Warning",
     className:
-      "border-amber-500/30 bg-amber-500/5",
+      "border-yellow-500/20 bg-yellow-500/5 text-yellow-500",
   },
-
-  important: {
-    label: "IMPORTANT",
-    icon: "❗",
+  danger: {
+    icon: AlertCircle,
+    label: "Important",
     className:
-      "border-red-500/30 bg-red-500/5",
+      "border-red-500/20 bg-red-500/5 text-red-500",
+  },
+  success: {
+    icon: CheckCircle2,
+    label: "Success",
+    className:
+      "border-emerald-500/20 bg-emerald-500/5 text-emerald-500",
   },
 };
 
 export default function Callout({
-  type = "note",
+  type = "info",
   title,
   children,
 }: CalloutProps) {
-  const current = config[type];
+  const style = styles[type] ?? styles.info;
+  const Icon = style.icon;
 
   return (
     <div
-      className={`mt-6 rounded-xl border p-5 ${current.className}`}
+      className={`my-8 rounded-xl border p-5 ${style.className}`}
     >
-      <div className="flex items-center gap-2 font-semibold">
-        <span>{current.icon}</span>
+      <div className="flex gap-4">
+        <div className="mt-0.5 shrink-0">
+          <Icon className="h-5 w-5" />
+        </div>
 
-        <span>
-          {title ?? current.label}
-        </span>
-      </div>
+        <div className="min-w-0 flex-1">
+          <div className="mb-1 text-sm font-semibold">
+            {title ?? style.label}
+          </div>
 
-      <div className="mt-3 text-sm leading-7 text-muted-foreground">
-        {children}
+          <div className="text-sm leading-7 text-foreground/80">
+            {children}
+          </div>
+        </div>
       </div>
     </div>
   );
