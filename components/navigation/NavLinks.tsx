@@ -10,6 +10,7 @@ import {
   GraduationCap,
   Home,
   Library,
+  Map,
   LucideIcon,
 } from "lucide-react";
 
@@ -21,6 +22,7 @@ type NavLink = {
 
 const links: NavLink[] = [
   { name: "Home", href: "/", icon: Home },
+  { name: "Roadmaps", href: "/roadmaps", icon: Map },
   { name: "Learn", href: "/learn", icon: BookOpen },
   { name: "Practice", href: "/practice", icon: Code2 },
   { name: "Interview", href: "/interview", icon: GraduationCap },

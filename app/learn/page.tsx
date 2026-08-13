@@ -1,10 +1,13 @@
 import Link from "next/link";
 import { Navbar } from "@/components/navigation";
 import Footer from "@/components/footer/Footer";
+
 import CategorySection from "@/components/learn/CategorySection";
 import SearchTopics from "@/components/learn/SearchTopics";
 import RecentlyViewed from "@/components/learn/RecentlyViewed";
+
 import { technologyCategories } from "@/data/technologies";
+
 import {
   ArrowRight,
   BookOpen,
@@ -14,6 +17,13 @@ import {
 } from "lucide-react";
 
 export default function LearnPage() {
+  /* =========================================================
+     TECHNOLOGY COUNT
+     ---------------------------------------------------------
+     Calculates the total number of technologies available
+     across all categories.
+     ========================================================= */
+
   const technologyCount = technologyCategories.reduce(
     (total, category) => total + category.technologies.length,
     0
@@ -21,104 +31,405 @@ export default function LearnPage() {
 
   return (
     <>
+      {/* =====================================================
+          TOP NAVBAR
+          ===================================================== */}
       <Navbar />
 
       <main className="min-h-screen overflow-hidden bg-background">
-        {/* ================= HERO ================= */}
+
+        {/* ===================================================
+            HERO SECTION
+            ---------------------------------------------------
+            Compact version:
+            - Less vertical padding
+            - Responsive spacing
+            - Smaller gaps on mobile
+            =================================================== */}
+
         <section className="relative border-border/60">
-          {/* Background glow */}
+
+          {/* -------------------------------------------------
+              Background Glow
+              -------------------------------------------------
+              pointer-events-none ensures these decorative
+              elements never block clicks/touches.
+              ------------------------------------------------- */}
+
           <div className="pointer-events-none absolute inset-0 overflow-hidden">
-            <div className="absolute left-1/2 top-0 h-[500px] w-[900px] -translate-x-1/2 rounded-full bg-emerald-500/10 blur-3xl" />
-            <div className="absolute left-[10%] top-[30%] h-40 w-40 rounded-full bg-cyan-500/5 blur-3xl" />
-            <div className="absolute right-[5%] top-[20%] h-52 w-52 rounded-full bg-emerald-400/5 blur-3xl" />
+
+            {/* Main center glow */}
+            <div
+              className="
+                absolute
+                left-1/2
+                top-0
+                h-[350px]
+                w-[650px]
+                -translate-x-1/2
+                rounded-full
+                bg-emerald-500/10
+                blur-3xl
+                sm:h-[400px]
+                sm:w-[750px]
+              "
+            />
+
+            {/* Left glow */}
+            <div
+              className="
+                absolute
+                left-[5%]
+                top-[25%]
+                h-32
+                w-32
+                rounded-full
+                bg-cyan-500/5
+                blur-3xl
+                sm:left-[10%]
+                sm:h-40
+                sm:w-40
+              "
+            />
+
+            {/* Right glow */}
+            <div
+              className="
+                absolute
+                right-[2%]
+                top-[20%]
+                h-40
+                w-40
+                rounded-full
+                bg-emerald-400/5
+                blur-3xl
+                sm:right-[5%]
+                sm:h-52
+                sm:w-52
+              "
+            />
           </div>
 
-          <div className="relative mx-auto max-w-7xl px-6 pb-12 pt-6 sm:px-8 lg:px-10 lg:pb-15 lg:pt-8">
+          {/* =================================================
+              HERO CONTENT
+              ================================================= */}
 
-            {/* Badge */}
-            <div className="flex justify-center px-4">
+          <div
+            className="
+              relative
+              mx-auto
+              max-w-7xl
+              px-4
+              pb-8
+              pt-5
+              sm:px-6
+              sm:pb-10
+              sm:pt-6
+              lg:px-8
+              lg:pb-12
+              lg:pt-7
+            "
+          >
+
+            {/* =================================================
+                BADGE
+                ================================================= */}
+
+            <div className="flex justify-center">
+
               <div
                 className="
-      inline-flex items-center gap-2 rounded-full
-      border border-emerald-500/20
-      bg-emerald-500/5
-      px-3 py-1.5
-      text-xs font-medium text-emerald-500
-      sm:gap-2 sm:px-4 sm:py-2 sm:text-sm
-    "
+                  inline-flex
+                  items-center
+                  gap-1.5
+                  rounded-full
+                  border
+                  border-emerald-500/20
+                  bg-emerald-500/5
+                  px-2.5
+                  py-1
+                  text-[11px]
+                  font-medium
+                  text-emerald-500
+                  sm:gap-2
+                  sm:px-3
+                  sm:py-1.5
+                  sm:text-xs
+                "
               >
-                <Sparkles className="h-3.5 w-3.5 shrink-0 sm:h-4 sm:w-4" />
-                <span>The Developer Knowledge Atlas</span>
+                <Sparkles className="h-3.5 w-3.5 shrink-0" />
+
+                <span>
+                  The Developer Knowledge Atlas
+                </span>
               </div>
             </div>
 
-            {/* Heading */}
-            <div className="mx-auto mt-4 max-w-5xl text-center">
-              <h1 className="text-3xl font-black tracking-[-0.04em] sm:text-4xl lg:text-5xl">
+            {/* =================================================
+                HERO HEADING
+                ================================================= */}
+
+            <div
+              className="
+                mx-auto
+                mt-3
+                max-w-5xl
+                text-center
+              "
+            >
+              <h1
+                className="
+                  text-3xl
+                  font-black
+                  tracking-[-0.04em]
+                  sm:text-4xl
+                  lg:text-5xl
+                "
+              >
                 Master technology.
                 <br />
+
                 <span className="text-emerald-500">
                   Build the future.
                 </span>
               </h1>
 
-              <p className="mx-auto mt-4 max-w-2xl text-base leading-7 text-muted-foreground sm:text-lg sm:leading-8">
+              {/* Hero description */}
+              <p
+                className="
+                  mx-auto
+                  mt-3
+                  max-w-2xl
+                  text-sm
+                  leading-6
+                  text-muted-foreground
+                  sm:text-base
+                  sm:leading-7
+                "
+              >
                 Learn modern development through structured paths,
                 practical notes, real examples, projects, and concepts
                 designed to take you from beginner to builder.
               </p>
             </div>
 
-            {/* Search */}
-            <div className="mx-auto mt-4 max-w-2xl">
+            {/* =================================================
+                SEARCH
+                ================================================= */}
+
+            <div
+              className="
+                mx-auto
+                mt-3
+                w-full
+                max-w-2xl
+              "
+            >
               <SearchTopics />
             </div>
 
-            {/* Quick links */}
-            <div className="mt-4 flex flex-wrap justify-center gap-3">
+            {/* =================================================
+                QUICK LINKS
+                ================================================= */}
+
+            <div
+              className="
+                mt-3
+                flex
+                flex-wrap
+                justify-center
+                gap-2
+              "
+            >
+
+              {/* Explore Technologies */}
               <Link
                 href="#technologies"
-                className="group inline-flex items-center gap-2 rounded-full border border-border bg-background/70 px-4 py-2 text-sm font-medium transition hover:border-emerald-500/40 hover:bg-emerald-500/5"
+                className="
+                  group
+                  inline-flex
+                  items-center
+                  gap-1.5
+                  rounded-full
+                  border
+                  border-border
+                  bg-background/70
+                  px-3
+                  py-1.5
+                  text-xs
+                  font-medium
+                  transition
+                  hover:border-emerald-500/40
+                  hover:bg-emerald-500/5
+                  sm:gap-2
+                  sm:px-4
+                  sm:py-2
+                  sm:text-sm
+                "
               >
-                <BookOpen className="h-4 w-4 text-emerald-500" />
-                Explore Technologies
-                <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-1" />
+                <BookOpen className="h-3.5 w-3.5 text-emerald-500 sm:h-4 sm:w-4" />
+
+                <span>
+                  Explore Technologies
+                </span>
+
+                <ArrowRight
+                  className="
+                    h-3.5
+                    w-3.5
+                    transition-transform
+                    group-hover:translate-x-1
+                  "
+                />
               </Link>
 
+              {/* View Roadmaps */}
               <Link
                 href="/roadmaps"
-                className="inline-flex items-center gap-2 rounded-full border border-border px-4 py-2 text-sm font-medium text-muted-foreground transition hover:text-foreground"
+                className="
+                  inline-flex
+                  items-center
+                  gap-1.5
+                  rounded-full
+                  border
+                  border-border
+                  px-3
+                  py-1.5
+                  text-xs
+                  font-medium
+                  text-muted-foreground
+                  transition
+                  hover:text-foreground
+                  sm:gap-2
+                  sm:px-4
+                  sm:py-2
+                  sm:text-sm
+                "
               >
-                <Layers3 className="h-4 w-4" />
-                View Roadmaps
+                <Layers3 className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
+
+                <span>
+                  View Roadmaps
+                </span>
               </Link>
             </div>
 
-            {/* Stats */}
-            <div className="mx-auto mt-6 grid max-w-3xl grid-cols-3 overflow-hidden rounded-2xl border border-border bg-card/50 backdrop-blur-sm">
-              <div className="border-r border-border px-4 py-6 text-center">
-                <div className="text-2xl font-bold sm:text-3xl">
+            {/* =================================================
+                STATISTICS
+                ================================================= */}
+
+            <div
+              className="
+                mx-auto
+                mt-4
+                grid
+                max-w-3xl
+                grid-cols-3
+                overflow-hidden
+                rounded-xl
+                border
+                border-border
+                bg-card/50
+                backdrop-blur-sm
+              "
+            >
+
+              {/* Technologies */}
+              <div
+                className="
+                  border-r
+                  border-border
+                  px-3
+                  py-4
+                  text-center
+                  sm:px-4
+                  sm:py-5
+                "
+              >
+                <div
+                  className="
+                    text-xl
+                    font-bold
+                    sm:text-2xl
+                  "
+                >
                   {technologyCount}+
                 </div>
-                <div className="mt-1 text-xs text-muted-foreground sm:text-sm">
+
+                <div
+                  className="
+                    mt-0.5
+                    text-[11px]
+                    text-muted-foreground
+                    sm:text-sm
+                  "
+                >
                   Technologies
                 </div>
               </div>
 
-              <div className="border-r border-border px-4 py-6 text-center">
-                <div className="text-2xl font-bold sm:text-3xl">
+              {/* Categories */}
+              <div
+                className="
+                  border-r
+                  border-border
+                  px-3
+                  py-4
+                  text-center
+                  sm:px-4
+                  sm:py-5
+                "
+              >
+                <div
+                  className="
+                    text-xl
+                    font-bold
+                    sm:text-2xl
+                  "
+                >
                   {technologyCategories.length}
                 </div>
-                <div className="mt-1 text-xs text-muted-foreground sm:text-sm">
+
+                <div
+                  className="
+                    mt-0.5
+                    text-[11px]
+                    text-muted-foreground
+                    sm:text-sm
+                  "
+                >
                   Categories
                 </div>
               </div>
 
-              <div className="px-4 py-6 text-center">
-                <div className="text-2xl font-bold sm:text-3xl">
+              {/* Concepts */}
+              <div
+                className="
+                  px-3
+                  py-4
+                  text-center
+                  sm:px-4
+                  sm:py-5
+                "
+              >
+                <div
+                  className="
+                    text-xl
+                    font-bold
+                    sm:text-2xl
+                  "
+                >
                   100+
                 </div>
-                <div className="mt-1 text-xs text-muted-foreground sm:text-sm">
+
+                <div
+                  className="
+                    mt-0.5
+                    text-[11px]
+                    text-muted-foreground
+                    sm:text-sm
+                  "
+                >
                   Concepts
                 </div>
               </div>
@@ -126,41 +437,141 @@ export default function LearnPage() {
           </div>
         </section>
 
-        {/* ================= RECENTLY VIEWED ================= */}
+        {/* =====================================================
+            RECENTLY VIEWED
+            ===================================================== */}
+
         <RecentlyViewed />
 
-        {/* ================= TECHNOLOGIES ================= */}
+        {/* =====================================================
+            TECHNOLOGY LIBRARY
+            ===================================================== */}
+
         <section
           id="technologies"
-          className="mx-auto max-w-7xl px-6 py-20 sm:px-8 lg:px-10"
+          className="
+            mx-auto
+            max-w-7xl
+            px-4
+            py-10
+            sm:px-6
+            sm:py-12
+            lg:px-8
+            lg:py-14
+          "
         >
-          <div className="mb-12 flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between">
+
+          {/* =================================================
+              SECTION HEADER
+              ================================================= */}
+
+          <div
+            className="
+              mb-7
+              flex
+              flex-col
+              gap-3
+              sm:mb-8
+              sm:flex-row
+              sm:items-end
+              sm:justify-between
+            "
+          >
+
+            {/* Left content */}
             <div>
-              <div className="mb-3 flex items-center gap-2 text-sm font-semibold text-emerald-500">
+
+              {/* Small label */}
+              <div
+                className="
+                  mb-2
+                  flex
+                  items-center
+                  gap-2
+                  text-xs
+                  font-semibold
+                  text-emerald-500
+                  sm:text-sm
+                "
+              >
                 <Code2 className="h-4 w-4" />
-                LEARNING LIBRARY
+
+                <span>
+                  LEARNING LIBRARY
+                </span>
               </div>
 
-              <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">
+              {/* Heading */}
+              <h2
+                className="
+                  text-2xl
+                  font-bold
+                  tracking-tight
+                  sm:text-3xl
+                  lg:text-4xl
+                "
+              >
                 Explore technologies
               </h2>
 
-              <p className="mt-3 max-w-2xl text-muted-foreground">
+              {/* Description */}
+              <p
+                className="
+                  mt-2
+                  max-w-2xl
+                  text-sm
+                  leading-6
+                  text-muted-foreground
+                  sm:text-base
+                "
+              >
                 Pick a technology and follow a structured journey
                 from fundamentals to advanced concepts.
               </p>
             </div>
 
+            {/* =================================================
+                ROADMAP LINK
+                ================================================= */}
+
             <Link
               href="/roadmaps"
-              className="group inline-flex shrink-0 items-center gap-2 text-sm font-medium text-emerald-500"
+              className="
+                group
+                inline-flex
+                shrink-0
+                items-center
+                gap-2
+                text-sm
+                font-medium
+                text-emerald-500
+              "
             >
               Explore roadmaps
-              <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+
+              <ArrowRight
+                className="
+                  h-4
+                  w-4
+                  transition-transform
+                  group-hover:translate-x-1
+                "
+              />
             </Link>
           </div>
 
-          <div className="space-y-16">
+          {/* =================================================
+              TECHNOLOGY CATEGORIES
+              -------------------------------------------------
+              Reduced from space-y-16 to a more compact spacing.
+              ================================================= */}
+
+          <div
+            className="
+              space-y-8
+              sm:space-y-10
+            "
+          >
             {technologyCategories.map((category) => (
               <CategorySection
                 key={category.name}
@@ -171,8 +582,11 @@ export default function LearnPage() {
         </section>
       </main>
 
-      <Footer />
+      {/* =====================================================
+          FOOTER
+          ===================================================== */}
 
+      <Footer />
     </>
   );
 }
