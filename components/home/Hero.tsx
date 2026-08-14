@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ArrowRight, Search } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 
 export default function Hero() {
   return (
@@ -21,16 +21,6 @@ export default function Hero() {
           Complete developer notes, practical examples, roadmaps and
           resources — organized in one place.
         </p>
-
-        {/* <div className="mx-auto mt-8 flex max-w-xl items-center rounded-xl border border-border bg-card px-4 py-3 shadow-lg">
-          <Search className="mr-3 h-5 w-5 text-muted-foreground" />
-
-          <input
-            type="text"
-            placeholder="Search HTML, JavaScript, React..."
-            className="w-full bg-transparent outline-none placeholder:text-muted-foreground"
-          />
-        </div> */}
 
         <div className="mt-8 flex flex-col justify-center gap-4 sm:flex-row">
           <Link

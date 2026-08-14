@@ -2,14 +2,16 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import {
   Menu,
   X,
   Search,
-  ChevronRight,
 } from "lucide-react";
+
 import { technologyTopics } from "@/data/topics";
+import { getTopicGroups } from "@/data/topicGroups";
+import LearningSidebarGroup from "./LearningSidebarGroup";
 
 interface LearningSidebarProps {
   technology: string;
@@ -24,17 +26,64 @@ export default function LearningSidebar({
   const [open, setOpen] = useState(false);
 
   const slug = technology.toLowerCase();
+
   const topics = technologyTopics[slug] ?? [];
 
-  const filteredTopics = topics.filter((topic) =>
-    topic.title
-      .toLowerCase()
-      .includes(search.toLowerCase())
+  const groups = useMemo(
+    () => getTopicGroups(slug, topics),
+    [slug, topics]
   );
+
+  const filteredGroups = useMemo(() => {
+    const query = search.trim().toLowerCase();
+
+    if (!query) {
+      return groups;
+    }
+
+    return groups
+      .map((group) => ({
+        ...group,
+        slugs: group.slugs.filter((topicSlug) => {
+          const topic = topics.find(
+            (item) => item.slug === topicSlug
+          );
+
+          return topic?.title
+            .toLowerCase()
+            .includes(query);
+        }),
+      }))
+      .filter((group) => group.slugs.length > 0);
+  }, [groups, topics, search]);
+
+  const filteredTopicCount = filteredGroups.reduce(
+    (total, group) => total + group.slugs.length,
+    0
+  );
+
+  const getTopicItems = (slugs: string[]) => {
+    return slugs
+      .map((topicSlug) =>
+        topics.find(
+          (topic) => topic.slug === topicSlug
+        )
+      )
+      .filter(
+        (
+          topic
+        ): topic is (typeof topics)[number] =>
+          Boolean(topic)
+      );
+  };
+
+  useEffect(() => {
+    setOpen(false);
+  }, [pathname]);
 
   return (
     <>
-      {/* Mobile menu */}
+      {/* Mobile menu button */}
       <button
         type="button"
         onClick={() => setOpen(true)}
@@ -42,7 +91,9 @@ export default function LearningSidebar({
           fixed left-4 top-20 z-40
           flex h-10 w-10 items-center justify-center
           rounded-lg border border-border
-          bg-background/95 shadow-sm backdrop-blur
+          bg-background/95
+          shadow-sm
+          backdrop-blur
           lg:hidden
         "
         aria-label="Open learning menu"
@@ -56,7 +107,8 @@ export default function LearningSidebar({
           onClick={() => setOpen(false)}
           className="
             fixed inset-0 z-40
-            bg-black/50 backdrop-blur-sm
+            bg-black/50
+            backdrop-blur-sm
             lg:hidden
           "
         />
@@ -66,9 +118,9 @@ export default function LearningSidebar({
       <aside
         className={`
           fixed inset-y-0 left-0 z-50
-          w-72 border-r border-border
+          w-72
+          border-r border-border
           bg-background
-
           transition-transform duration-200
 
           lg:sticky
@@ -178,84 +230,39 @@ export default function LearningSidebar({
             </p>
 
             <span className="text-[10px] tabular-nums text-muted-foreground">
-              {filteredTopics.length}
+              {filteredTopicCount}
             </span>
           </div>
 
-          <div className="space-y-0.5">
-            {filteredTopics.map((topic, index) => {
-              const href = `/learn/${slug}/${topic.slug}`;
-              const isActive = pathname === href;
+          <div className="space-y-1">
+            {filteredGroups.map((group) => {
+              const groupTopics = getTopicItems(
+                group.slugs
+              );
+
+              const hasActiveTopic = groupTopics.some(
+                (topic) =>
+                  pathname ===
+                  `/learn/${slug}/${topic.slug}`
+              );
 
               return (
-                <Link
-                  key={topic.slug}
-                  href={href}
-                  onClick={() => setOpen(false)}
-                  className={`
-                    group relative flex items-center
-                    gap-3 rounded-md
-                    px-3 py-2
-                    text-[13px]
-                    transition-colors
-
-                    ${
-                      isActive
-                        ? "bg-emerald-500/10 font-medium text-emerald-500"
-                        : "text-muted-foreground hover:bg-muted/70 hover:text-foreground"
-                    }
-                  `}
-                >
-                  {/* Active indicator */}
-                  {isActive && (
-                    <span
-                      className="
-                        absolute left-0 top-1/2
-                        h-5 w-0.5
-                        -translate-y-1/2
-                        rounded-full
-                        bg-emerald-500
-                      "
-                    />
-                  )}
-
-                  <span
-                    className={`
-                      w-5 shrink-0
-                      text-[10px]
-                      tabular-nums
-                      ${
-                        isActive
-                          ? "text-emerald-500"
-                          : "text-muted-foreground/60"
-                      }
-                    `}
-                  >
-                    {String(index + 1).padStart(2, "0")}
-                  </span>
-
-                  <span className="min-w-0 flex-1 truncate">
-                    {topic.title}
-                  </span>
-
-                  <ChevronRight
-                    className={`
-                      h-3 w-3 shrink-0
-                      transition-all
-                      ${
-                        isActive
-                          ? "translate-x-0 text-emerald-500 opacity-100"
-                          : "-translate-x-1 opacity-0 group-hover:translate-x-0 group-hover:opacity-60"
-                      }
-                    `}
-                  />
-                </Link>
+                <LearningSidebarGroup
+                  key={group.title}
+                  title={group.title}
+                  technology={slug}
+                  items={groupTopics}
+                  defaultOpen={
+                    hasActiveTopic ||
+                    Boolean(search)
+                  }
+                />
               );
             })}
           </div>
 
           {/* Empty state */}
-          {filteredTopics.length === 0 && (
+          {filteredTopicCount === 0 && (
             <div className="px-3 py-10 text-center">
               <Search className="mx-auto h-5 w-5 text-muted-foreground" />
 
@@ -268,7 +275,8 @@ export default function LearningSidebar({
                   type="button"
                   onClick={() => setSearch("")}
                   className="
-                    mt-2 text-xs
+                    mt-2
+                    text-xs
                     font-medium
                     text-emerald-500
                     hover:underline

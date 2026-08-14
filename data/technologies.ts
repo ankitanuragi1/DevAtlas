@@ -79,6 +79,11 @@ export const technologyCategories = [
         slug: "python",
         description: "Simple and versatile programming language.",
       },
+      {
+        name: "java",
+        slug: "java",
+        description: "Object-oriented programming language.",
+      },
     ],
   },
 
