@@ -157,9 +157,9 @@ export default async function TopicPage({
         </div>
       </header>
 
-      <div className="mx-auto flex max-w-[1600px]">
+      <div className="mx-auto flex max-w-[1440px]">
         {/* Sidebar */}
-        <aside className="hidden w-64 shrink-0 border-r border-border/60 lg:block">
+        <aside className="hidden w-60 shrink-0 border-r border-border/60 lg:block">
           <div className="sticky top-14 h-[calc(100vh-3.5rem)] overflow-y-auto py-6">
             <LearningSidebar
               technology={technologyTitle}
@@ -186,7 +186,7 @@ export default async function TopicPage({
             </div>
           </div>
 
-          <div className="mx-auto max-w-6xl">
+          <div className="mx-auto w-full max-w-[1180px]">
             <div className="flex">
               {/* Article */}
               <article className="min-w-0 flex-1">
@@ -244,8 +244,8 @@ export default async function TopicPage({
               </article>
 
               {/* Right navigation */}
-              <aside className="hidden w-56 shrink-0 xl:block">
-                <div className="sticky top-14 px-5 py-10">
+              <aside className="hidden w-48 shrink-0 xl:block">
+                <div className="sticky top-20 px-5 py-10">
                   <p className="mb-4 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
                     On this path
                   </p>

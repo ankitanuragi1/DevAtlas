@@ -169,7 +169,7 @@ export default function LearningSidebar({
           lg:top-0
           lg:z-0
           lg:h-screen
-          lg:w-64
+          lg:w-60
           lg:translate-x-0
 
           ${
