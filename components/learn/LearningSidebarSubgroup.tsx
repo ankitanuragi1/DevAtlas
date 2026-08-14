@@ -5,15 +5,12 @@ import { ChevronDown, ChevronRight } from "lucide-react";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 
-export interface LearningSubtopic {
-  slug: string;
-  title: string;
-}
+import type { LearningTopic } from "./types/learning";
 
 interface LearningSidebarSubgroupProps {
   title: string;
   technology: string;
-  items: LearningSubtopic[];
+  items: LearningTopic[];
   defaultOpen?: boolean;
 }
 
@@ -103,7 +100,9 @@ export default function LearningSidebarSubgroup({
                   />
                 )}
 
-                {item.title}
+                <span className="truncate">
+                  {item.title}
+                </span>
               </Link>
             );
           })}

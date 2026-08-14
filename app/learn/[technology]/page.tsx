@@ -1,5 +1,13 @@
 import Link from "next/link";
-import { ArrowRight, BookOpen, Clock, Layers3 } from "lucide-react";
+import {
+  ArrowRight,
+  BookOpen,
+  CheckCircle2,
+  Clock,
+  Layers3,
+  Sparkles,
+} from "lucide-react";
+
 import LearningProgress from "@/components/learn/LearningProgress";
 import LearningSidebar from "@/components/learn/LearningSidebar";
 import { technologyTopics } from "@/data/topics";
@@ -39,27 +47,28 @@ export default async function TechnologyPage({
 }: TechnologyPageProps) {
   const { technology } = await params;
 
-  const technologyName =
-    formatTechnologyName(technology);
-
+  const technologyName = formatTechnologyName(technology);
   const topics = technologyTopics[technology] ?? [];
 
   if (topics.length === 0) {
     return (
       <main className="flex min-h-screen items-center justify-center px-6">
-        <div className="text-center">
-          <h1 className="text-3xl font-bold">
+        <div className="w-full max-w-md text-center">
+          <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl border border-emerald-500/20 bg-emerald-500/10 text-emerald-500">
+            <BookOpen className="h-6 w-6" />
+          </div>
+
+          <h1 className="mt-6 text-3xl font-bold">
             {technologyName}
           </h1>
 
-          <p className="mt-3 text-muted-foreground">
-            Learning content for this technology is
-            coming soon.
+          <p className="mt-3 leading-7 text-muted-foreground">
+            Learning content for this technology is coming soon.
           </p>
 
           <Link
             href="/learn"
-            className="mt-6 inline-flex items-center gap-2 rounded-lg bg-emerald-500 px-5 py-2.5 text-sm font-medium text-white transition hover:bg-emerald-600"
+            className="mt-7 inline-flex items-center gap-2 rounded-xl bg-emerald-500 px-5 py-3 text-sm font-medium text-white transition hover:bg-emerald-600"
           >
             Explore other technologies
             <ArrowRight className="h-4 w-4" />
@@ -69,174 +78,227 @@ export default async function TechnologyPage({
     );
   }
 
+  const totalMinutes = topics.reduce((total, topic) => {
+    const minutes = parseInt(topic.duration);
+    return total + (Number.isNaN(minutes) ? 0 : minutes);
+  }, 0);
+
   return (
     <>
-      {/* Header */}
-      <header className="border-b border-border">
-        <div className="mx-auto flex h-16 max-w-7xl items-center px-4 sm:px-6 lg:px-8">
+      {/* Breadcrumb Header */}
+      <header className="sticky top-0 z-30 border-b border-border bg-background/90 backdrop-blur-xl">
+        <div className="mx-auto flex h-14 max-w-7xl items-center px-4 sm:px-6 lg:px-8">
           <Link
             href="/learn"
-            className="text-lg font-bold transition hover:text-emerald-500"
+            className="text-sm font-semibold transition-colors hover:text-emerald-500"
           >
             DevAtlas
           </Link>
 
-          <span className="mx-3 text-muted-foreground">
-            /
-          </span>
+          <span className="mx-3 text-muted-foreground/50">/</span>
 
           <span className="text-sm text-muted-foreground">
-            {technologyName}
+            Learn {technologyName}
           </span>
         </div>
       </header>
 
       <div className="mx-auto flex max-w-7xl">
         {/* Sidebar */}
-        <LearningSidebar
-          technology={technologyName}
-        />
+        <LearningSidebar technology={technologyName} />
 
-        {/* Main */}
+        {/* Main Content */}
         <main className="min-w-0 flex-1">
           <LearningProgress technology={technology} />
 
-          {/* <NotesContent
-            content={content}
-            technology={technology}
-          /> */}
-          <div className="mx-auto max-w-4xl px-6 py-12 lg:px-10">
+          <div className="mx-auto max-w-5xl px-5 py-10 sm:px-8 lg:px-10 lg:py-14">
             {/* Hero */}
-            <section>
-              <div className="flex h-14 w-14 items-center justify-center rounded-xl bg-emerald-500/10 text-xl font-bold text-emerald-500">
-                {technologyName.charAt(0)}
+            <section className="relative overflow-hidden rounded-3xl border border-border bg-card p-7 sm:p-10">
+              {/* Background decoration */}
+              <div className="pointer-events-none absolute -right-20 -top-20 h-56 w-56 rounded-full bg-emerald-500/10 blur-3xl" />
+              <div className="pointer-events-none absolute -bottom-24 -left-20 h-48 w-48 rounded-full bg-emerald-500/5 blur-3xl" />
+
+              <div className="relative">
+                <div className="flex flex-wrap items-center gap-3">
+                  <div className="flex h-14 w-14 items-center justify-center rounded-2xl border border-emerald-500/20 bg-emerald-500/10 text-xl font-bold text-emerald-500">
+                    {technologyName.charAt(0)}
+                  </div>
+
+                  <div className="flex items-center gap-2 rounded-full border border-emerald-500/20 bg-emerald-500/5 px-3 py-1.5 text-xs font-semibold text-emerald-500">
+                    <Sparkles className="h-3.5 w-3.5" />
+                    Learning Path
+                  </div>
+                </div>
+
+                <h1 className="mt-7 text-4xl font-bold tracking-tight sm:text-5xl">
+                  Learn{" "}
+                  <span className="text-emerald-500">
+                    {technologyName}
+                  </span>
+                </h1>
+
+                <p className="mt-5 max-w-2xl text-base leading-7 text-muted-foreground sm:text-lg sm:leading-8">
+                  Follow a structured learning path and build your
+                  understanding step by step, from fundamentals to
+                  advanced concepts.
+                </p>
+
+                <div className="mt-8 flex flex-wrap gap-3">
+                  <Link
+                    href={`/learn/${technology}/${topics[0].slug}`}
+                    className="inline-flex items-center gap-2 rounded-xl bg-emerald-500 px-5 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-emerald-600 hover:shadow-md"
+                  >
+                    Start Learning
+                    <ArrowRight className="h-4 w-4" />
+                  </Link>
+
+                  <div className="inline-flex items-center gap-2 rounded-xl border border-border px-5 py-3 text-sm text-muted-foreground">
+                    <CheckCircle2 className="h-4 w-4 text-emerald-500" />
+                    Self-paced learning
+                  </div>
+                </div>
               </div>
-
-              <p className="mt-6 text-sm font-medium uppercase tracking-wider text-emerald-500">
-                Learning Path
-              </p>
-
-              <h1 className="mt-2 text-4xl font-bold tracking-tight sm:text-5xl">
-                Learn {technologyName}
-              </h1>
-
-              <p className="mt-5 max-w-2xl text-lg leading-8 text-muted-foreground">
-                Follow a structured learning path and
-                build your understanding step by step,
-                from fundamentals to advanced concepts.
-              </p>
             </section>
 
             {/* Stats */}
-            <section className="mt-10 grid gap-4 sm:grid-cols-3">
-              <div className="rounded-xl border border-border p-5">
-                <BookOpen className="h-5 w-5 text-emerald-500" />
+            <section className="mt-6 grid gap-4 sm:grid-cols-3">
+              <div className="group rounded-2xl border border-border bg-card p-5 transition hover:border-emerald-500/30">
+                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-emerald-500/10">
+                  <BookOpen className="h-5 w-5 text-emerald-500" />
+                </div>
 
-                <p className="mt-4 text-2xl font-bold">
+                <p className="mt-5 text-2xl font-bold">
                   {topics.length}
                 </p>
 
                 <p className="mt-1 text-sm text-muted-foreground">
-                  Topics
+                  Topics to learn
                 </p>
               </div>
 
-              <div className="rounded-xl border border-border p-5">
-                <Layers3 className="h-5 w-5 text-emerald-500" />
+              <div className="group rounded-2xl border border-border bg-card p-5 transition hover:border-emerald-500/30">
+                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-emerald-500/10">
+                  <Layers3 className="h-5 w-5 text-emerald-500" />
+                </div>
 
-                <p className="mt-4 text-2xl font-bold">
+                <p className="mt-5 text-2xl font-bold">
                   Beginner
                 </p>
 
                 <p className="mt-1 text-sm text-muted-foreground">
-                  Starting Level
+                  Starting level
                 </p>
               </div>
 
-              <div className="rounded-xl border border-border p-5">
-                <Clock className="h-5 w-5 text-emerald-500" />
+              <div className="group rounded-2xl border border-border bg-card p-5 transition hover:border-emerald-500/30">
+                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-emerald-500/10">
+                  <Clock className="h-5 w-5 text-emerald-500" />
+                </div>
 
-                <p className="mt-4 text-2xl font-bold">
-                  {topics.reduce((total, topic) => {
-                    const minutes = parseInt(
-                      topic.duration
-                    );
-
-                    return total + minutes;
-                  }, 0)}{" "}
-                  min
+                <p className="mt-5 text-2xl font-bold">
+                  {totalMinutes} min
                 </p>
 
                 <p className="mt-1 text-sm text-muted-foreground">
-                  Estimated Learning
+                  Estimated learning
                 </p>
               </div>
             </section>
 
             {/* Learning Path */}
             <section className="mt-14">
-              <div className="mb-6">
-                <h2 className="text-2xl font-bold">
-                  Learning Path
-                </h2>
+              <div className="mb-7 flex items-end justify-between gap-4">
+                <div>
+                  <div className="flex items-center gap-2">
+                    <span className="h-1.5 w-8 rounded-full bg-emerald-500" />
+                    <span className="text-sm font-semibold text-emerald-500">
+                      CURRICULUM
+                    </span>
+                  </div>
 
-                <p className="mt-2 text-muted-foreground">
-                  Learn each concept in the recommended
-                  order.
-                </p>
+                  <h2 className="mt-3 text-2xl font-bold sm:text-3xl">
+                    Learning Path
+                  </h2>
+
+                  <p className="mt-2 max-w-xl text-sm leading-6 text-muted-foreground sm:text-base">
+                    Learn each concept in the recommended order and
+                    build your knowledge progressively.
+                  </p>
+                </div>
+
+                <span className="hidden rounded-full border border-border px-3 py-1.5 text-xs font-medium text-muted-foreground sm:block">
+                  {topics.length} lessons
+                </span>
               </div>
 
-              <div className="space-y-3">
-                {topics.map((topic, index) => (
-                  <Link
-                    key={topic.slug}
-                    href={`/learn/${technology}/${topic.slug}`}
-                    className="group flex items-center gap-4 rounded-xl border border-border p-5 transition hover:border-emerald-500/50 hover:bg-muted/40"
-                  >
-                    {/* Number */}
-                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-muted text-sm font-semibold text-muted-foreground group-hover:bg-emerald-500/10 group-hover:text-emerald-500">
-                      {String(index + 1).padStart(2, "0")}
-                    </div>
+              <div className="relative">
+                {/* Timeline */}
+                <div className="absolute bottom-6 left-5 top-6 w-px bg-border" />
 
-                    {/* Content */}
-                    <div className="min-w-0 flex-1">
-                      <h3 className="font-semibold group-hover:text-emerald-500">
-                        {topic.title}
-                      </h3>
-
-                      <p className="mt-1 text-sm text-muted-foreground">
-                        {topic.description}
-                      </p>
-
-                      <div className="mt-2 flex gap-3 text-xs text-muted-foreground">
-                        <span>
-                          {topic.level}
-                        </span>
-
-                        <span>•</span>
-
-                        <span>
-                          {topic.duration}
-                        </span>
+                <div className="space-y-3">
+                  {topics.map((topic, index) => (
+                    <Link
+                      key={topic.slug}
+                      href={`/learn/${technology}/${topic.slug}`}
+                      className="group relative flex gap-4 rounded-2xl border border-border bg-card p-4 transition-all duration-200 hover:-translate-y-0.5 hover:border-emerald-500/40 hover:shadow-md sm:p-5"
+                    >
+                      {/* Number */}
+                      <div className="relative z-10 flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-border bg-background text-xs font-bold text-muted-foreground transition group-hover:border-emerald-500/30 group-hover:bg-emerald-500/10 group-hover:text-emerald-500">
+                        {String(index + 1).padStart(2, "0")}
                       </div>
-                    </div>
 
-                    {/* Arrow */}
-                    <ArrowRight className="h-5 w-5 shrink-0 text-muted-foreground transition-transform group-hover:translate-x-1 group-hover:text-emerald-500" />
-                  </Link>
-                ))}
+                      {/* Content */}
+                      <div className="min-w-0 flex-1">
+                        <div className="flex items-start justify-between gap-4">
+                          <h3 className="font-semibold leading-6 transition-colors group-hover:text-emerald-500">
+                            {topic.title}
+                          </h3>
+
+                          <ArrowRight className="mt-0.5 h-4 w-4 shrink-0 text-muted-foreground transition-all group-hover:translate-x-1 group-hover:text-emerald-500" />
+                        </div>
+
+                        <p className="mt-1.5 text-sm leading-6 text-muted-foreground">
+                          {topic.description}
+                        </p>
+
+                        <div className="mt-3 flex flex-wrap items-center gap-2 text-xs text-muted-foreground">
+                          <span className="rounded-full bg-muted px-2.5 py-1">
+                            {topic.level}
+                          </span>
+
+                          <span className="text-border">•</span>
+
+                          <span>{topic.duration}</span>
+                        </div>
+                      </div>
+                    </Link>
+                  ))}
+                </div>
               </div>
             </section>
 
-            {/* Start Button */}
-            <section className="mt-10 border-t border-border pt-8">
-              <Link
-                href={`/learn/${technology}/${topics[0].slug}`}
-                className="inline-flex items-center gap-2 rounded-lg bg-emerald-500 px-6 py-3 font-medium text-white transition hover:bg-emerald-600"
-              >
-                Start Learning
-                <ArrowRight className="h-4 w-4" />
-              </Link>
+            {/* Bottom CTA */}
+            <section className="mt-12 overflow-hidden rounded-2xl border border-emerald-500/20 bg-emerald-500/5 p-6 sm:p-8">
+              <div className="flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between">
+                <div>
+                  <p className="text-lg font-semibold">
+                    Ready to start learning?
+                  </p>
+
+                  <p className="mt-1 text-sm text-muted-foreground">
+                    Begin with the first topic and progress through
+                    the complete {technologyName} path.
+                  </p>
+                </div>
+
+                <Link
+                  href={`/learn/${technology}/${topics[0].slug}`}
+                  className="inline-flex shrink-0 items-center justify-center gap-2 rounded-xl bg-emerald-500 px-5 py-3 text-sm font-semibold text-white transition hover:bg-emerald-600"
+                >
+                  Start Learning
+                  <ArrowRight className="h-4 w-4" />
+                </Link>
+              </div>
             </section>
           </div>
         </main>

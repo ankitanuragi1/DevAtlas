@@ -5,25 +5,18 @@ import { ChevronDown, ChevronRight } from "lucide-react";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 
-import LearningSidebarSubgroup, {
-  type LearningSubtopic,
-} from "./LearningSidebarSubgroup";
+import type {
+  LearningTopic,
+  LearningSubgroup,
+} from "./types/learning";
 
-interface SidebarItem {
-  slug: string;
-  title: string;
-}
-
-interface SidebarSubgroup {
-  title: string;
-  items: LearningSubtopic[];
-}
+import LearningSidebarSubgroup from "./LearningSidebarSubgroup";
 
 interface LearningSidebarGroupProps {
   title: string;
   technology: string;
-  items: SidebarItem[];
-  subgroups?: SidebarSubgroup[];
+  items: LearningTopic[];
+  subgroups?: LearningSubgroup[];
   defaultOpen?: boolean;
 }
 
@@ -70,15 +63,13 @@ export default function LearningSidebarGroup({
 
   return (
     <div className="space-y-0.5">
-      {/* Main group */}
       <button
         type="button"
         onClick={() => setIsOpen((value) => !value)}
         className="
           group flex w-full items-center gap-2
           rounded-md px-3 py-2
-          text-left text-[13px]
-          font-medium
+          text-left text-[13px] font-medium
           text-muted-foreground
           transition-colors
           hover:bg-muted/70
@@ -101,10 +92,8 @@ export default function LearningSidebarGroup({
         </span>
       </button>
 
-      {/* Group content */}
       {isOpen && (
         <div className="ml-3 border-l border-border/70 pl-2">
-          {/* Direct topics */}
           {items.map((item) => {
             const href = `/learn/${technology}/${item.slug}`;
             const isActive = pathname === href;
@@ -144,20 +133,17 @@ export default function LearningSidebarGroup({
             );
           })}
 
-          {/* Reusable subgroups */}
           {subgroups.map((group) => (
             <LearningSidebarSubgroup
               key={group.title}
               title={group.title}
               technology={technology}
               items={group.items}
-              defaultOpen={
-                group.items.some(
-                  (item) =>
-                    pathname ===
-                    `/learn/${technology}/${item.slug}`
-                )
-              }
+              defaultOpen={group.items.some(
+                (item) =>
+                  pathname ===
+                  `/learn/${technology}/${item.slug}`
+              )}
             />
           ))}
         </div>

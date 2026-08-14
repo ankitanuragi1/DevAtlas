@@ -1,20 +1,12 @@
-export interface TopicGroupItem {
-  title: string;
-  slug: string;
-}
+import type {
+  LearningGroup,
+  LearningTopic,
+} from "@/components/learn/types/learning";
 
-export interface TopicSubgroup {
-  title: string;
-  items: TopicGroupItem[];
-}
-
-export interface TopicGroup {
-  title: string;
-  slugs: string[];
-  subgroups?: TopicSubgroup[];
-}
-
-export const topicGroups: Record<string, TopicGroup[]> = {
+export const topicGroups: Record<
+  string,
+  LearningGroup[]
+> = {
   javascript: [
     {
       title: "Fundamentals",
@@ -640,11 +632,8 @@ export const topicGroups: Record<string, TopicGroup[]> = {
 
 export function getTopicGroups(
   technology: string,
-  topics: Array<{
-    slug: string;
-    title: string;
-  }>
-): TopicGroup[] {
+  topics: LearningTopic[]
+): LearningGroup[] {
   const groups = topicGroups[technology];
 
   if (!groups) {

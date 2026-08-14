@@ -3,14 +3,11 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
-import {
-  Menu,
-  X,
-  Search,
-} from "lucide-react";
+import { Menu, X, Search } from "lucide-react";
 
 import { technologyTopics } from "@/data/topics";
 import { getTopicGroups } from "@/data/topicGroups";
+
 import LearningSidebarGroup from "./LearningSidebarGroup";
 
 interface LearningSidebarProps {
@@ -34,6 +31,9 @@ export default function LearningSidebar({
     [slug, topics]
   );
 
+  /*
+   * Search direct topics + nested subtopics
+   */
   const filteredGroups = useMemo(() => {
     const query = search.trim().toLowerCase();
 
@@ -42,26 +42,46 @@ export default function LearningSidebar({
     }
 
     return groups
-      .map((group) => ({
-        ...group,
-        slugs: group.slugs.filter((topicSlug) => {
-          const topic = topics.find(
-            (item) => item.slug === topicSlug
+      .map((group) => {
+        const directTopics = group.slugs.filter(
+          (topicSlug) => {
+            const topic = topics.find(
+              (item) => item.slug === topicSlug
+            );
+
+            return topic?.title
+              .toLowerCase()
+              .includes(query);
+          }
+        );
+
+        const subgroups = group.subgroups
+          ?.map((subgroup) => ({
+            ...subgroup,
+            items: subgroup.items.filter((item) =>
+              item.title.toLowerCase().includes(query)
+            ),
+          }))
+          .filter(
+            (subgroup) => subgroup.items.length > 0
           );
 
-          return topic?.title
-            .toLowerCase()
-            .includes(query);
-        }),
-      }))
-      .filter((group) => group.slugs.length > 0);
+        return {
+          ...group,
+          slugs: directTopics,
+          subgroups,
+        };
+      })
+      .filter(
+        (group) =>
+          group.slugs.length > 0 ||
+          Boolean(group.subgroups?.length)
+      );
   }, [groups, topics, search]);
 
-  const filteredTopicCount = filteredGroups.reduce(
-    (total, group) => total + group.slugs.length,
-    0
-  );
-
+  /*
+   * Convert topic slugs into actual topic objects
+   */
   const getTopicItems = (slugs: string[]) => {
     return slugs
       .map((topicSlug) =>
@@ -77,6 +97,28 @@ export default function LearningSidebar({
       );
   };
 
+  /*
+   * Total visible topics
+   */
+  const topicCount = filteredGroups.reduce(
+    (total, group) => {
+      const directCount = group.slugs.length;
+
+      const subgroupCount =
+        group.subgroups?.reduce(
+          (count, subgroup) =>
+            count + subgroup.items.length,
+          0
+        ) ?? 0;
+
+      return total + directCount + subgroupCount;
+    },
+    0
+  );
+
+  /*
+   * Close mobile sidebar after navigation
+   */
   useEffect(() => {
     setOpen(false);
   }, [pathname]);
@@ -230,7 +272,7 @@ export default function LearningSidebar({
             </p>
 
             <span className="text-[10px] tabular-nums text-muted-foreground">
-              {filteredTopicCount}
+              {topicCount}
             </span>
           </div>
 
@@ -240,11 +282,21 @@ export default function LearningSidebar({
                 group.slugs
               );
 
-              const hasActiveTopic = groupTopics.some(
-                (topic) =>
-                  pathname ===
-                  `/learn/${slug}/${topic.slug}`
-              );
+              const hasActiveTopic =
+                groupTopics.some(
+                  (topic) =>
+                    pathname ===
+                    `/learn/${slug}/${topic.slug}`
+                ) ||
+                Boolean(
+                  group.subgroups?.some((subgroup) =>
+                    subgroup.items.some(
+                      (item) =>
+                        pathname ===
+                        `/learn/${slug}/${item.slug}`
+                    )
+                  )
+                );
 
               return (
                 <LearningSidebarGroup
@@ -252,6 +304,7 @@ export default function LearningSidebar({
                   title={group.title}
                   technology={slug}
                   items={groupTopics}
+                  subgroups={group.subgroups}
                   defaultOpen={
                     hasActiveTopic ||
                     Boolean(search)
@@ -262,7 +315,7 @@ export default function LearningSidebar({
           </div>
 
           {/* Empty state */}
-          {filteredTopicCount === 0 && (
+          {topicCount === 0 && (
             <div className="px-3 py-10 text-center">
               <Search className="mx-auto h-5 w-5 text-muted-foreground" />
 
